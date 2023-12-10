@@ -1,0 +1,20 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --cyan: #a5f3fc;
+  --rose: #fb7185;
+  --indigo: #4f46e5;
+  --green: #34d399;
+  --yellow: #fbbf24;
+  --slate: #6b7280;
+  --purple: #8b5cf6;
+  --white: #ffffff;
+  --snow: #eaebf5;
+  --dark: #2c303a;
+}

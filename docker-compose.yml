@@ -1,0 +1,23 @@
+version: '1'
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: myapp
+    volumes:
+      - dbdata:/mysql
+  redis:
+    image: redis
+    volumes:
+      - dbdata:/redis
+
+volumes:
+  dbdata:
