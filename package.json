@@ -2,17 +2,16 @@
   "private": true,
   "scripts": {
     "prepare": "nitropack prepare",
-    "dev": "concurrently \"bun sass\" \"nitropack dev\"",
+    "dev": "concurrently \"redis-server\" \"bun sass\" \"nitropack dev\"",
     "build": "nitropack build",
     "sass": "sass ./pages/styles/scss/main.scss ./pages/styles/style.css --watch",
     "start": "bun .output/server/index.mjs",
     "test": "bun test --timeout 2000",
-    "preview": "node .output/server/index.mjs"
+    "preview": "bun .output/server/index.mjs"
   },
   "dependencies": {
     "ioredis": "^5.3.2",
-    "nitropack": "latest",
-    "unstorage": "^1.10.1"
+    "nitropack": "latest"
   },
   "devDependencies": {
     "@types/ioredis": "^5.0.0",
