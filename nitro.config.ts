@@ -8,6 +8,10 @@ export default defineNitroConfig({
             tls: false as any,
             port: process.env.REDIS_PORT ?? 6379,
             password: process.env.REDIS_PASSWORD ?? undefined,
+        },
+        'file': {
+            driver: 'fs',
+            base: "./storage"
         }
     },
     preset: "bun"
