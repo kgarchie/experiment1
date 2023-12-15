@@ -4,10 +4,10 @@ export default defineNitroConfig({
         'redis': {
             driver: 'redis',
             base: "unstorage",
-            host: 'localhost',
+            host: process.env.REDIS_HOST ?? "localhost",
             tls: false as any,
-            port: 6379,
-            password: ''
+            port: process.env.REDIS_PORT ?? 6379,
+            password: process.env.REDIS_PASSWORD ?? undefined,
         }
     },
     preset: "bun"

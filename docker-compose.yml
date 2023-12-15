@@ -1,4 +1,4 @@
-version: '1'
+version: '3'
 services:
   web:
     build: .
@@ -13,11 +13,8 @@ services:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: myapp
     volumes:
-      - dbdata:/mysql
+      - ./dbdata/mysql:/var/lib/mysql
   redis:
     image: redis
     volumes:
-      - dbdata:/redis
-
-volumes:
-  dbdata:
+      - ./dbdata/redis:/data
