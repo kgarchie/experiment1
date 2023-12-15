@@ -1,14 +1,9 @@
 # Experiment 1
 ## Exploring HTMX, VanJS, Nitro, Docker, Redis and Bun
 ### Setup
-#### On Linux
 - Clone the repo
 - `cd repo-name`
-- `chmod +x redis.sh`
-- `sudo redis.sh`
-- `npm install` |
-- 
-Soon to support docker pull. For now, just clone, then `npm install` and `npm run dev`
+- Soon to support docker pull. For now, just run `npm install` and `npm run dev`
 
 ### Bunions Only
 Setting a value for "types" in tsconfig compiler options means that TypeScript will ignore other global type definitions, including lib: ["dom"]. If you need to add DOM types into your project, add the following triple-slash directives at the top of any TypeScript file in your project.
