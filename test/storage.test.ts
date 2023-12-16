@@ -13,5 +13,5 @@ test("storage_default", async () => {
     const result = await storage.getItem("foo")
     expect(result).toBe("bar")
     await storage.removeItem("foo")
-    storage.dispose()
-})  
+    await storage.dispose()
+})

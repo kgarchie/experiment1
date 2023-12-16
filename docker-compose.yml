@@ -13,7 +13,7 @@ services:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: myapp
+      MYSQL_DATABASE: experiment1
     volumes:
       - ./dbdata/mysql:/var/lib/mysql
   redis:

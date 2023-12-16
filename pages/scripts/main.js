@@ -4,9 +4,9 @@ const { div, p, img, a } = van.tags
 
 /**
  * This will construct a message
- * @param {string} name 
- * @param {string} message 
- * @param {Array<{url: string, name: string, size: string}> | null} attachments 
+ * @param {string} name
+ * @param {string} message
+ * @param {Array<{url: string, name: string, size: string}> | null} attachments
  */
 const Message = (name, message, attachments = null) => div({ class: "message-wrapper" },
     div({ class: "profile-picture" },
@@ -41,8 +41,8 @@ class Socket {
     socket = null
 
     /**
-     * 
-     * @param {string} url 
+     *
+     * @param {string} url
      */
     constructor(url) {
         throw new Error("The server does not implement this yet")
@@ -101,8 +101,8 @@ class Socket {
     }
 
     /**
-     * 
-     * @param {import("../../types").SocketMessage} data 
+     *
+     * @param {import("../../types").SocketMessage} data
      */
     send(data) {
         this.socket.send(JSON.stringify(data))
@@ -112,7 +112,7 @@ class Socket {
 /**
  * @param {string} name
  * @param {Object} value
- * @param {expiry?: Date, secure?: boolean, path: string} options
+ * @param {{expiry?: Date, secure?: boolean, path: string} | null} options
  */
 function setCookie(name, value, options = null) {
     let cookie = `${name}=${JSON.stringify(value)};`
@@ -147,7 +147,7 @@ function deleteCookie(name) {
  * Replaces inbuilf fetch
  * @param {string} url
  * @param {RequestInit} init
- * @returns {Promise<Response>} 
+ * @returns {Promise<Response>}
  */
 async function Fetch(url, init = null) {
     if (init) {
@@ -166,10 +166,10 @@ async function Fetch(url, init = null) {
 }
 
 /**
- * 
- * @param {string} username 
- * @param {string} password 
- * @returns 
+ *
+ * @param {string} username
+ * @param {string} password
+ * @returns
  */
 async function login(username, password) {
     const response = await Fetch('/api/auth/login').then(res => res.json).catch(err => { console.error(err); return undefined })
@@ -182,8 +182,8 @@ async function login(username, password) {
 }
 
 /**
- * 
- * @returns 
+ *
+ * @returns
  */
 async function logout() {
     const response = await Fetch('/api/auth/logout').then(res => res.json).catch(err => { console.error(err); return undefined })
@@ -191,6 +191,6 @@ async function logout() {
     if (!response) return alert("An error occurred during fetch")
 
     if (response.status !== 200) return alert(response.body)
-    
+
     deleteCookie('auth')
 }

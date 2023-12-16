@@ -11,4 +11,9 @@ export type SocketMessage = {
     data?: any
 }
 
+export type APIResponse = {
+    status: number,
+    body: any
+}
+
 export const SocketPort = 8000
