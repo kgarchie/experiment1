@@ -4,8 +4,7 @@ const fs = require("node:fs");
 const OS = process.platform;
 
 if (OS !== 'linux') {
-  // TODO: Add a volume for the filestore in the docker-compose.yml file
-  console.log(`Redis is not supported on this OS; WedApp will use filestore instead`);
+  console.log(`Redis is not supported on this OS; WebApp will use file storage instead`);
   process.exit(1);
 } else {
   console.log(`Installing Redis on Linux`);

@@ -1,26 +1,27 @@
-const { spawn } = require("node:child_process");
+const {spawn} = require("node:child_process");
+const path = require("node:path");
 
-const runtime = process.argv[0].split("/").pop() ?? "bun";
+const runtime = process.argv[0].split(path.sep).pop()
+const pm = runtime.includes("bun") ? "bun" : "npm";
 
-let out;
-if (process.platform !== "linux") {
-    out = spawn(`${runtime}`, ["run", "dev:windows"], {
-        stdio: "inherit",
-        shell: true,
-    });
-} else {
-    out = spawn(`${runtime}`, ["run", "dev:linux"], {
-        stdio: "inherit",
-        shell: true,
-    });
+const command = () => {
+  if (process.platform === "win32") {
+    return spawn(`${pm}`, ["run", "dev:windows"], { shell: true })
+  } else {
+    return spawn(`${pm}`, ["run", "dev:linux"], { shell: true })
+  }
 }
 
-if(!out) return console.error("Failed to start child process");
+const out = command();
 
-out.stdout.on(`runtime`, (data) => {
-    console.log(data);
+out.stdout.on("data", (data) => {
+  console.log(data.toString());
+});
+
+out.stderr.on("data", (data) => {
+  console.error(data.toString());
 });
 
 out.on("exit", (code) => {
-    console.log(`Child exited with code ${code}`);
+  console.log(`Child exited with code ${code}`);
 });

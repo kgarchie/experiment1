@@ -3,15 +3,15 @@
   "scripts": {
     "prepare": "nitropack prepare && bun ./setup.js",
     "dev:linux": "concurrently \"redis-server\" \"bun sass\" \"nitropack dev\"",
-    "dev:windows": "concurrently \"bun sass\" \"nitropack dev\"",
+    "dev:windows": "concurrently \"npm run sass\" \"nitropack dev\"",
     "dev:bun": "bun ./run-dev.js",
     "dev:node": "node ./run-dev.js",
-    "dev": "bun dev:bun || yarn dev:node || npm run dev:node",
+    "dev": "bun dev:bun || npm run dev:node",
     "build": "nitropack build",
     "sass": "sass ./pages/styles/scss/main.scss ./pages/styles/style.css --watch",
     "start:bun": "bun .output/server/index.mjs",
     "start:node": "node .output/server/index.mjs",
-    "start": "bun start:bun || yarn start:node || npm run start:node",
+    "start": "bun start:bun || npm run start:node",
     "test": "bun test --timeout 2000",
     "preview": "bun .output/server/index.mjs"
   },
