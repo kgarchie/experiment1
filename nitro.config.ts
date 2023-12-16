@@ -11,7 +11,7 @@ export default defineNitroConfig({
         },
         'file': {
             driver: 'fs',
-            base: "./storage"
+            base: "./filestore"
         }
     },
     preset: "bun"
