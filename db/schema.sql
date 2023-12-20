@@ -61,15 +61,12 @@ create table if not exists `sessions`
     `id`         int(11) unsigned not null auto_increment,
     `user_id`    int(11) unsigned not null,
     `token`      varchar(255)     not null unique,
+    `is_valid`   boolean          not null default true,
     `created_at` timestamp        not null default current_timestamp,
     `updated_at` timestamp        not null default current_timestamp on update current_timestamp,
     primary key (`id`),
     foreign key (`user_id`) references `users` (`id`)
 );
-
-# Edit change the is_valid column to boolean and default to true
-alter table `sessions`
-    change `is_valid` `is_valid` boolean not null default true;
 
 # Edit make the token column unique
 alter table `sessions`

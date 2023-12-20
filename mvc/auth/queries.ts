@@ -1,12 +1,10 @@
 import {eq, and} from "drizzle-orm";
-import db from '../../../db/db';
-import {sessions, users} from "../../../db/drizzle/schema";
-import {hashPassword, verifyPassword} from "../utils";
+import db from '../../db/db';
+import {sessions, users} from "../../db/drizzle/schema";
 import {v4} from "uuid";
-import {ulid} from 'ulid';
 
 export async function createUser(data: { name: string, email: string, password: string }) {
-    const auth = hashPassword(data.password)
+    const auth = useHashPassword(data.password)
     return db.insert(users).values({
         name: data.name,
         email: data.email,
@@ -84,7 +82,7 @@ export async function authenticate(data: { email: string, password: string }): P
     const user = await getUserByEmail(data.email)
     if (!user) throw new Error('User not found')
 
-    const valid = verifyPassword(data.password, user.salt, user.password)
+    const valid = useVerifyPassword(data.password, user.salt, user.password)
     if (!valid) throw new Error('Invalid password')
 
     return await createToken(user)
