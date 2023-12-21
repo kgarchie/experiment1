@@ -38,10 +38,10 @@ export async function createToken(user: { userId: number, email: string }):Promi
     })
 }
 
-export async function revokeToken(token: string, userId: number) {
+export async function revokeToken(token: string) {
     return await db.update(sessions).set({
-        isValid: false,
-    }).where(and(eq(sessions.token, token), eq(sessions.userId, userId))).catch((err) => {
+        isValid: 1,
+    }).where(and(eq(sessions.token, token))).catch((err) => {
         console.error(err)
         throw new Error('Unable to revoke token')
     })
@@ -49,7 +49,7 @@ export async function revokeToken(token: string, userId: number) {
 
 export async function revokeAllTokens(userId: number) {
     return await db.update(sessions).set({
-        isValid: false,
+        isValid: 1,
     }).where(eq(sessions.userId, userId)).catch((err) => {
         console.error(err)
         throw new Error('Unable to revoke token')
@@ -59,7 +59,7 @@ export async function revokeAllTokens(userId: number) {
 export async function verifyToken(token: string) {
     const rows = await db.select()
         .from(sessions)
-        .where(and(eq(sessions.token, token), eq(sessions.isValid, true)))
+        .where(and(eq(sessions.token, token), eq(sessions.isValid, 1)))
         .catch((err) => {
             console.error(err)
             throw new Error('Unable to verify token')
@@ -70,7 +70,7 @@ export async function verifyToken(token: string) {
 export async function getUserByToken(token: string) {
     const rows = await db.select()
         .from(sessions)
-        .where(and(eq(sessions.token, token), eq(sessions.isValid, true)))
+        .where(and(eq(sessions.token, token), eq(sessions.isValid, 1)))
         .catch((err) => {
             console.error(err)
             throw new Error('Unable to verify token')

@@ -1,17 +1,4 @@
-import {
-    mysqlTable,
-    mysqlSchema,
-    AnyMySqlColumn,
-    int,
-    text,
-    timestamp,
-    varchar,
-    index,
-    foreignKey,
-    unique,
-    tinyint,
-    boolean
-} from "drizzle-orm/mysql-core"
+import { mysqlTable, mysqlSchema, AnyMySqlColumn, int, text, timestamp, varchar, index, foreignKey, unique, tinyint } from "drizzle-orm/mysql-core"
 import { sql } from "drizzle-orm"
 
 
@@ -39,12 +26,13 @@ export const sessions = mysqlTable("sessions", {
 	token: varchar("token", { length: 255 }).notNull(),
 	createdAt: timestamp("created_at", { mode: 'string' }).default('current_timestamp()').notNull(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).default('current_timestamp()').notNull(),
-	isValid: boolean("is_valid").default(true).notNull(),
+	isValid: tinyint("is_valid").default(1).notNull(),
 },
 (table) => {
 	return {
 		userId: index("user_id").on(table.userId),
 		token: unique("token").on(table.token),
+		sessionsTokenUnique: unique("sessions_token_unique").on(table.token),
 	}
 });
 
