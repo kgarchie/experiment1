@@ -40,15 +40,14 @@ const Message = (name, message, attachments = null) => div({class: "message-wrap
  * @ignore
  */
 class Socket {
-  url = null
   socket = null
+  url = null
 
   /**
    *
    * @param {string} url
    */
   constructor(url) {
-    throw new Error("The server does not implement this yet")
     this.url = url
     this.setup()
   }
@@ -111,6 +110,9 @@ class Socket {
     this.socket.send(JSON.stringify(data))
   }
 }
+
+const socket = new Socket(window.location.origin.replace("http", "ws") + "/ws")
+console.log(socket.socket)
 
 /**
  * @param {string} name

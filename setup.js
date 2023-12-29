@@ -14,7 +14,7 @@ if (OS !== 'linux') {
   console.log(colors.warning(), "Redis is not supported on this OS; WebApp will use file storage instead");
   process.exit(0);
 } else {
-  console.log(colors.green(), `Installing Redis on Linux`, colors.reset);
+  console.log(colors.green(), `Installing Redis on Linux`);
 }
 
 for (let arg of process.argv.slice(2)) {
@@ -76,6 +76,12 @@ if (!fs.existsSync('./redis/7.2.3.tar.gz')) {
   clean();
 }
 
+/**
+ * This function cleans up the workspace after Redis is installed
+ * It deletes the folder named redis and all its contents
+ * 
+ * @returns {void}
+ */
 function clean() {
   console.log(`Cleaning up workspace`);
   execSync(`rm -rf ./redis`, { stdio: 'inherit' }, (err, stdout, stderr) => {
@@ -88,6 +94,12 @@ function clean() {
   });
 }
 
+
+/**
+ * This function installs Redis on the system
+ * 
+ * @returns {void}
+ */
 function install() {
   console.log(colors.info(), `Installing Redis`);
   execSync(`cd ./redis/redis-7.2.3 && sudo make install`, (err, stdout, stderr) => {
@@ -99,6 +111,10 @@ function install() {
   });
 }
 
+
+/**
+ * This function builds Redis from source code
+ */
 function build() {
   console.log(colors.info(), `Building Redis, this may take a while`);
   execSync(`cd ./redis/redis-7.2.3 && make MALLOC=libc USE_SYSTEMD=yes`, (err, stdout, stderr) => {
@@ -111,6 +127,9 @@ function build() {
 
 }
 
+/**
+ * This function extracts the Redis source code
+ */
 function extract() {
   console.log(colors.info(), `Extracting Redis source code`);
   execSync(`tar xzf ./redis/7.2.3.tar.gz -C ./redis`, (err, stdout, stderr) => {
@@ -122,6 +141,9 @@ function extract() {
   })
 }
 
+/**
+ * This function downloads the Redis source code
+ */
 function download() {
   console.log(colors.info(), `Downloading Redis source code`);
   execSync(`wget https://github.com/redis/redis/archive/7.2.3.tar.gz -O ./redis/7.2.3.tar.gz`, (err, stdout, stderr) => {
@@ -133,6 +155,10 @@ function download() {
   });
 }
 
+
+/**
+ * This function uninstalls Redis from the system
+ */
 function uninstall() {
   console.log(colors.info(), `Uninstalling Redis`);
   execSync(`sudo rm -rf /usr/local/bin/redis*`, (err, stdout, stderr) => {
