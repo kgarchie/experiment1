@@ -40,11 +40,20 @@ const Message = (name, message, attachments = null) => div({class: "message-wrap
  * @ignore
  */
 class Socket {
+  /** @type {WebSocket | null} */
   socket = null
+  /** @type {string | null} */
   url = null
+  /**
+   * Keeps track of whether the socket is attempting to reconnect
+   * so that it doesn't attempt to reconnect multiple times while
+   * waiting for the timeout to elapse
+   *
+   * @type {boolean}
+   */
+  attemptingReconnect = false
 
   /**
-   *
    * @param {string} url
    */
   constructor(url) {
@@ -61,6 +70,7 @@ class Socket {
   }
 
   onmessage(e) {
+    console.log(e)
     const data = JSON.parse(e.data)
     switch (data.type) {
       case "message":
@@ -77,23 +87,30 @@ class Socket {
     console.warn(e)
     this.dispose()
 
-    console.info("Retrying connection in 5 seconds...")
-    setTimeout(() => {
-      this.setup()
-    }, 5000)
+    this.attemptReconnect()
   }
 
   onerror(e) {
     console.error(e)
     this.dispose()
 
-    console.info("Retrying connection in 5 seconds...")
+    this.attemptReconnect()
+  }
+
+  attemptReconnect() {
+    if(this.attemptingReconnect) return
+
+    console.log("Attempting to reconnect")
+
+    this.attemptingReconnect = true
     setTimeout(() => {
       this.setup()
+      this.attemptingReconnect = false
     }, 5000)
   }
 
   dispose() {
+    if(!this.socket) return console.warn("Socket already disposed")
     this.socket.close()
     this.socket = null
   }
@@ -103,7 +120,6 @@ class Socket {
   }
 
   /**
-   *
    * @param {import("../../types").SocketMessage} data
    */
   send(data) {
@@ -112,7 +128,9 @@ class Socket {
 }
 
 const socket = new Socket(window.location.origin.replace("http", "ws") + "/ws")
-console.log(socket.socket)
+setTimeout(() => {
+  console.log(socket.socket)
+}, 500)
 
 /**
  * @param {string} name

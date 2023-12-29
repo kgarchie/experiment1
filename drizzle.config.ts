@@ -12,7 +12,7 @@ let config = {
     database: process.env.MYSQL_DATABASE_PROD
 }
 
-if(process.env.DEBUG.toString().trim().toLowerCase() === 'true' || configHasNullValues(config)){
+if(process.env.DEBUG?.toString().trim().toLowerCase() === 'true' || configHasNullValues(config)){
     config = {
         host: process.env.MYSQL_HOST,
         port: parseInt(process.env.MYSQL_PORT),
