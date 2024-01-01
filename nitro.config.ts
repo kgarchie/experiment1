@@ -1,3 +1,4 @@
+import {isBun} from "std-env";
 //https://nitro.unjs.io/config
 export default defineNitroConfig({
     storage: {
@@ -14,5 +15,5 @@ export default defineNitroConfig({
             base: "./filestore"
         }
     },
-    preset: "bun"
+    preset: isBun ? 'bun': 'node-server'
 });

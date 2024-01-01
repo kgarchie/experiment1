@@ -1,0 +1,25 @@
+import {NitroApp} from "nitropack";
+import {spawn} from "node:child_process";
+import {isBun, isDevelopment, isDebug} from "std-env";
+
+export default defineNitroPlugin((app: NitroApp) => {
+    app.hooks.hook("error", (error, context) => {
+        setTimeout(() => {
+            if(isBun) {
+                console.log("Restarting server with Bun...")
+                if(isDebug || isDevelopment) {
+                    spawn("bun", ["run", "dev"])
+                } else {
+                    spawn("bun", ["run", "start"])
+                }
+            } else {
+                console.log("Restarting server with NPM...")
+                if(isDevelopment || isDebug) {
+                    spawn("npm", ["run", "dev"])
+                } else {
+                    spawn("npm", ["run", "start"])
+                }
+            }
+        }, 500)
+    })
+})

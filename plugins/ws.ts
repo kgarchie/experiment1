@@ -1,4 +1,4 @@
-import { WebSocketServer } from 'ws'
+import { WebSocketServer, WebSocket } from 'ws'
 import { NodeIncomingMessage, NodeServerResponse } from "h3";
 import { NitroApp } from 'nitropack';
 import internal from 'stream';
