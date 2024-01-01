@@ -1,13 +1,22 @@
-import {WebSocketServer} from 'ws'
-import {NodeIncomingMessage, NodeServerResponse} from "h3";
+import { WebSocketServer } from 'ws'
+import { NodeIncomingMessage, NodeServerResponse } from "h3";
+import { NitroApp } from 'nitropack';
+import internal from 'stream';
 
 declare global {
     var connections: Set<WebSocket>
 }
 
-export default defineNitroPlugin(app => {
+function shutdown(wss: WebSocketServer) {
+    wss.close()
+    for (const ws of globalThis.connections) {
+        ws.close()
+    }
+}
+
+export default defineNitroPlugin((app: NitroApp) => {
     if (!globalThis.connections) globalThis.connections = new Set<WebSocket>()
-    const wss = new WebSocketServer({noServer: true})
+    const wss = new WebSocketServer({ noServer: true })
 
     function onConnect(ws: WebSocket) {
         console.log("Client Connected to WsServer")
@@ -27,13 +36,22 @@ export default defineNitroPlugin(app => {
     }
 
     app.router.use("/ws", fromNodeMiddleware((req: NodeIncomingMessage, res: NodeServerResponse) => {
-        wss.handleUpgrade(req, req.socket, null, onConnect)
-        res.setHeader('Upgrade', 'websocket')
-        res.setHeader('Connection', 'Upgrade')
-        res.statusCode = 101
-        res.end()
-        console.log("Client connected")
+        const socket: internal.Duplex = req.socket
+        wss.handleUpgrade(req, socket, Buffer.alloc(0), (ws) => {
+            wss.emit("connection", ws, req)
+            onConnect(ws)
+        })
     }))
+
+    app.hooks.hook("close", () => {
+        shutdown(wss)
+    })
+
+    app.hooks.hook('error', (error, context) => {
+        console.error(error)
+        console.debug(context)
+        shutdown(wss)
+    })
 
     useBase("/", app.router.handler)
 })
