@@ -1,5 +1,5 @@
 import { WebSocketServer, WebSocket } from 'ws'
-import { NodeIncomingMessage, NodeServerResponse } from "h3";
+import { NodeIncomingMessage } from "h3";
 import { NitroApp } from 'nitropack';
 import internal from 'stream';
 
@@ -35,7 +35,8 @@ export default defineNitroPlugin((app: NitroApp) => {
         }
     }
 
-    app.router.use("/ws", fromNodeMiddleware((req: NodeIncomingMessage, res: NodeServerResponse) => {
+    app.router.use("/ws", eventHandler((context) => {
+        const req: NodeIncomingMessage = context.node.req
         const socket: internal.Duplex = req.socket
         wss.handleUpgrade(req, socket, Buffer.alloc(0), (ws) => {
             wss.emit("connection", ws, req)
