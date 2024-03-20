@@ -17,13 +17,10 @@ Setting a value for "types" in tsconfig compiler options means that TypeScript w
 ## Findings
 ### BackEnd
 #### WebSockets and Nitro
-- There is no official support for WebSockets in Nitro server. The workaround would be to spin up another node server on another port solely to serve sockets which is unideal for a variety of readons - [TBD](#why-you-may-not-want-the-extra-socket-server-intance-for-Node).
-- I suspected, after a slight perusal of the source code, a plausible solution would be to make the internal server extendable so that devs can add WebSocket functionalities for themselves, another dev discovered this [too](https://github.com/nuxt/nuxt/discussions/16663) and such a shim was implemented [here](https://github.com/nuxt/nuxt/pull/19230) .
-- Another older (stopped working due to internal code refactors but the Nitro/Nuxt team) is [here](https://github.com/nuxt/nuxt/discussions/16663#discussioncomment-6249743), plausibly downgrading the Nitro server could be a desperate option.
-- Another fancy trick is to simply create another server(SockeServer) on a different port and then use NGinX, the reverse proxy, to "merge" the ports as [here](https://github.com/nuxt/nuxt/pull/19230#issuecomment-1442042254) and with these NGinX [configs](https://github.com/nuxt/nuxt/pull/19230#:~:text=server%20%7B%0A%20%20%20%20%20%20%20%23name%20/%20ssl,proxy_set_header%20Host%20%24host%3B%0A%20%20%20%20%20%20%20%7D%0A%7D)
+- Nitro(H3) gained a WebSocket feature. It's ambitious in wanting to be platform agnostic but not feature-complete yet, more info here https://h3.unjs.io/guide/websocket
 
 ###### Verdict
-Heartbreaking
+Almost Noiceee!!!!!
 
 #### Redis
 Had to compile with flags for `system-md` and `malloc`
